@@ -29,11 +29,12 @@ CUPCAKE_DATA_2 = {
 }
 
 CUPCAKE_DATA_3 = {
-    "flavor": "CHANGED",
-    "size": "CHANGED",
+    "flavor": "Changed_flaver",
+    "size": "Changed_size",
     "rating": 1,
     "image": "http://test.com/cupcake2.jpg"
 }
+
 
 class CupcakeViewsTestCase(TestCase):
     """Tests for views of API."""
@@ -116,6 +117,8 @@ class CupcakeViewsTestCase(TestCase):
             self.assertEqual(Cupcake.query.count(), 2)
 
     def test_update_cupcake(self):
+        '''Test for Patching cupcake'''
+
         with app.test_client() as client:
             url = f"/api/cupcakes/{self.cupcake.id}"
             resp = client.patch(url, json=CUPCAKE_DATA_3)
@@ -124,14 +127,33 @@ class CupcakeViewsTestCase(TestCase):
 
             data = resp.json
 
-            # don't know what ID we'll get, make sure it's an int & normalize
-            # breakpoint()
-
             self.assertEqual(data, {
                 "cupcake": {
-                    "flavor": "CHANGED",
-                    "size": "CHANGED",
+                    "id": self.cupcake.id,
+                    "flavor": "Changed_flaver",
+                    "size": "Changed_size",
                     "rating": 1,
                     "image": "http://test.com/cupcake2.jpg"
                 }
             })
+
+    def test_delete_cupcake(self):
+        '''Test for Deleting cupcake'''
+
+        with app.test_client() as client:
+            url = f"/api/cupcakes/{self.cupcake.id}"
+            resp = client.delete(url)
+
+            self.assertEqual(resp.status_code, 200)
+
+            data = resp.json
+            # breakpoint()
+            self.assertEqual(data,
+                             {"message": "Deleted"}
+                             )
+
+            # Deleting same cupcake again
+            url = f"/api/cupcakes/{self.cupcake.id}"
+            resp = client.delete(url)
+
+            self.assertEqual(resp.status_code, 404)

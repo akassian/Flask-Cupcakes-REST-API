@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}<h1>Cupcakes</h1>{% endblock %}
+
+{% block content %}
+
+<div class='cupcakes'></div>
+
+<!-- <button class='button'>click me</button> -->
+
+<form class='add-cupcake'>
+  Flavor<br><input type="text" class="flavor" name="flavor"><br>
+  Size<br><input type="text" class="size" name="size"><br>
+  Rating<br><input type="number" step="0.01" class="rating" name="rating"><br>
+  Image Url<br><input type="url" class="image" name="image"><br>
+
+  <button type="submit">Add</button>
+</form>
+
+{% endblock %}
